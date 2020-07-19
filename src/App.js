@@ -1,25 +1,34 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useContext } from 'react';
+import 'semantic-ui-css/semantic.min.css'
+import Login from './view/login';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { UserContext } from './config/user-provider';
+import Home from './view/home';
+import Header from './components/header'
+
+
+
+// const user = null
 
 function App() {
+
+  const user = useContext(UserContext)
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Switch>
+        {console.log(user)}
+        {
+          !user ?
+            <Route path="/" exact={true} component={Login} />
+            :
+            <>
+              <Header />
+              <Route path="/" component={Home} />
+            </>
+        }
+      </Switch>
+    </ BrowserRouter>
   );
 }
 
