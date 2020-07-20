@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Container, Header, Image, List, Portal, Segment, Button, Form, TransitionablePortal, Message } from 'semantic-ui-react';
+import { Container, Header, Image, List, Portal, Segment, Button, Form, Message } from 'semantic-ui-react';
 import ChatBotService from '../../services/api/chatbot.services';
 import JanelaChatbot from '../janela-chatbot';
 import './home.scss';
@@ -17,7 +17,6 @@ class Home extends Component {
       itemSelected: null,
       openNodeChild: false,
       openDialog: false,
-      code_current: 0,
       input: '',
       output: '',
       formChild: {
@@ -39,15 +38,11 @@ class Home extends Component {
   addListeners = () => {
     const { listaDocumentos, listaSubDocumentos } = this.state
 
-    let array = []
-
     this.chatBotService.findDocuments(1, 1).then((res) => {
       console.log('findDocumentos', res.data)
 
       this.chatBotService.findChatBot(1, 1).then((res) => {
         console.log(res.data)
-        array = res.data
-
         res.data.forEach(element => {
           if (element.code_relation > 0) {
             listaSubDocumentos.push(element)
@@ -80,12 +75,12 @@ class Home extends Component {
   }
 
   atualizarPergunta = () => {
-    const { input, output, code_current } = this.state
+    const { input, output, itemSelected } = this.state
 
     if (input === '' && output === '') {
       return;
     }
-    this.chatBotService.updateData(null, code_current, 1, 1, input, output).then((resp) => {
+    this.chatBotService.updateData(null, itemSelected.code_current, 1, 1, input, output).then((resp) => {
       this.handleClose()
       this.addListeners()
     })
@@ -114,10 +109,10 @@ class Home extends Component {
   }
 
   deletarPergunta = () => {
-    const { code_current, input, output } = this.state
+    const { itemSelected, input, output } = this.state
 
-    if (code_current !== 0) {
-      this.chatBotService.deleteData(code_current, 1, 1, input, output).then((resp) => {
+    if (itemSelected.code_current !== 0) {
+      this.chatBotService.deleteData(itemSelected.code_current, 1, 1, input, output).then((resp) => {
         this.handleClose()
         this.addListeners()
       })
@@ -135,8 +130,8 @@ class Home extends Component {
     });
   };
 
-  handleClose = () => this.setState({ openDialog: false, input: '', output: '', itemSelected: null, code_current: 0, openNodeChild: false, form: { inputChild: '', outputChild: '' } })
-  handleOpen = (resposta) => this.setState({ itemSelected: resposta, openDialog: true, input: resposta.input, output: resposta.output, code_current: resposta.code_current })
+  handleClose = () => this.setState({ openDialog: false, input: '', output: '', itemSelected: null, openNodeChild: false, listaDocumentos: [], listaSubDocumentos: [], form: { inputChild: '', outputChild: '' } })
+  handleOpen = (resposta) => this.setState({ itemSelected: resposta, openDialog: true, input: resposta.input, output: resposta.output })
 
 
   portalNode = () => {
@@ -183,8 +178,8 @@ class Home extends Component {
                   <input type='text' placeholder='Resposta' value={outputChild} name='outputChild' onChange={this.onChangeField} />
                 </Form.Field>
                 <div>
-                  <Button floated='right' positive onClick={() => this.cadastrarPergunta()}>Cadastrar</Button>
-                  <Button floated='left' negative onClick={() => this.setState({ openNodeChild: false, form: { inputChild: '', outputChild: '' } })}>Cancelar</Button>
+                  <Button type='button' floated='right' positive onClick={() => this.cadastrarPergunta()}>Cadastrar</Button>
+                  <Button type='button' floated='left' negative onClick={() => this.setState({ openNodeChild: false, form: { inputChild: '', outputChild: '' } })}>Cancelar</Button>
                 </div>
               </Form>
             </React.Fragment>
@@ -198,28 +193,24 @@ class Home extends Component {
                 <label>Resposta</label>
                 <input type='text' placeholder='Resposta' value={output} onChange={event => this.setState({ output: event.target.value })} />
               </Form.Field>
-              <Button.Group floated='right'>
+              <Button.Group type='button' floated='right'>
                 {
                   itemSelected ?
                     <>
-                      <Button positive onClick={() => this.atualizarPergunta()}>Editar</Button>
-                      <Button>Deletar</Button>
+                      <Button type='button' positive onClick={() => this.atualizarPergunta()}>Editar</Button>
+                      <Button type='button' onClick={() => this.deletarPergunta()}>Deletar</Button>
                     </>
                     :
-                    <Button positive onClick={() => this.cadastrarPergunta()}>Cadastrar</Button>
+                    <Button type='button' positive onClick={() => this.cadastrarPergunta()}>Cadastrar</Button>
                 }
 
-                <Button negative onClick={this.handleClose}>Cancelar</Button>
+                <Button type='button' negative onClick={this.handleClose}>Cancelar</Button>
               </Button.Group>
             </Form>
           }
         </Segment>
       </Portal>
     )
-  }
-
-  changeBackground(e) {
-    e.target.style.background = 'red';
   }
 
   listChild = (code_current) => {
@@ -230,8 +221,8 @@ class Home extends Component {
     if (filter.length) {
       return (
         filter.map((resp, i) => (
-          <List.List onMouseOver={this.changeBackground} onMouseOut={(e) => e.target.style.background = 'transparent'} key={i.toString() + Math.random()}>
-            <List.Item>
+          <List.List key={i.toString() + Math.random()}>
+            <List.Item onClick={() => this.handleOpen(resp)}>
               <List.Icon name='folder' />
               <List.Content>
                 <List.Header>{resp.input}</List.Header>
@@ -272,7 +263,6 @@ class Home extends Component {
                 <Button.Content hidden>Abrir Bot</Button.Content>
               </Button>
             </p>
-            {console.log('listaSubDocumentos', listaSubDocumentos)}
             <Image src='https://react.semantic-ui.com/images/wireframe/media-paragraph.png' style={{ marginTop: '2em' }} />
             <List>
               {
