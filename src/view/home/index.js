@@ -3,7 +3,7 @@ import { Container, Header, Image, List, Portal, Segment, Button, Form, Message 
 import ChatBotService from '../../services/api/chatbot.services';
 import JanelaChatbot from '../janela-chatbot';
 import './home.scss';
-import JanelaChat from '../../components/header/janela-chatbot/janela-chat';
+import JanelaChat from '../../components/janela-chatbot/janela-chat';
 
 class Home extends Component {
 
@@ -132,6 +132,7 @@ class Home extends Component {
 
   handleClose = () => this.setState({ openDialog: false, input: '', output: '', itemSelected: null, openNodeChild: false, listaDocumentos: [], listaSubDocumentos: [], form: { inputChild: '', outputChild: '' } })
   handleOpen = (resposta) => this.setState({ itemSelected: resposta, openDialog: true, input: resposta.input, output: resposta.output })
+  handleCancel = () => this.setState({ openDialog: false, input: '', output: '', itemSelected: null, openNodeChild: false, form: { inputChild: '', outputChild: '' } })
 
 
   portalNode = () => {
@@ -145,7 +146,7 @@ class Home extends Component {
     ]
 
     return (
-      <Portal onClose={this.handleClose} open={openDialog}>
+      <Portal onClose={this.handleCancel} open={openDialog}>
         <Segment
           style={{
             left: '40%',
@@ -204,7 +205,7 @@ class Home extends Component {
                     <Button type='button' positive onClick={() => this.cadastrarPergunta()}>Cadastrar</Button>
                 }
 
-                <Button type='button' negative onClick={this.handleClose}>Cancelar</Button>
+                <Button type='button' negative onClick={() => this.handleCancel()}>Cancelar</Button>
               </Button.Group>
             </Form>
           }
@@ -241,7 +242,7 @@ class Home extends Component {
 
   render = () => {
 
-    const { listaDocumentos, listaSubDocumentos, openDialog } = this.state
+    const { listaDocumentos, openDialog } = this.state
 
     return (
       (

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Header, Segment, Input } from 'semantic-ui-react';
 import './janela-chat.scss';
-import ChatBotService from '../../../services/api/chatbot.services';
+import ChatBotService from '../../services/api/chatbot.services';
 
 class JanelaChat extends Component {
 

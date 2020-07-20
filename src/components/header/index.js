@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Menu, Container, Dropdown, Image } from 'semantic-ui-react';
+import { auth } from '../../services/firebase/firebase';
+import { Menu, Container, Dropdown, Image, Input } from 'semantic-ui-react';
 
 class Header extends Component {
 
@@ -9,6 +10,14 @@ class Header extends Component {
     this.state = {
 
     }
+  }
+
+  signOutUser = () => {
+    auth.signOut().then(function () {
+      // Sign-out successful.
+    }).catch(function (error) {
+      // An error happened.
+    });
   }
 
   render = () => {
@@ -39,6 +48,16 @@ class Header extends Component {
                 <Dropdown.Item>List Item</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
+            <Menu.Menu position='right'>
+              <Menu.Item>
+                <Input icon='search' placeholder='Search...' />
+              </Menu.Item>
+              <Menu.Item
+                name='logout'
+                as='a'
+                onClick={() => this.signOutUser()}
+              />
+            </Menu.Menu>
           </Container>
         </Menu>
       </div>
