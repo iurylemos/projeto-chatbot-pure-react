@@ -85,6 +85,15 @@ class JanelaChat extends Component {
     })
   }
 
+  _handleKeyDown = (e) => {
+    const { input } = this.state
+    if (e.key === 'Enter') {
+      if (input !== '') {
+        this.sendMessage()
+      }
+    }
+  }
+
   render = () => {
 
     const { input, messages, loading, message_init } = this.state
@@ -133,6 +142,7 @@ class JanelaChat extends Component {
               onClick: () => this.sendMessage()
             }}
             value={input}
+            onKeyDown={this._handleKeyDown}
             onChange={(event) => this.setState({ input: event.target.value })}
           />
         </div>

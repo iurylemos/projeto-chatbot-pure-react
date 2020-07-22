@@ -74,20 +74,21 @@ class Login extends Component {
 
             <Grid.Column verticalAlign='middle'>
               <Link to='/cadastro'>
-                <Button content='Cadastrar' icon='signup' size='big' />
+                <Button content='Cadastrar' icon='signup' size='big' color='orange' />
               </Link>
 
             </Grid.Column>
           </Grid>
 
-          <Divider vertical>Or</Divider>
-          <Divider />
-          <ResetSenha />
+          <Divider vertical>Ou</Divider>
+
           {error !== null && <Message negative>
             <Message.Header>Algo de errado acontenceu</Message.Header>
             <p>{error}</p>
           </Message>}
         </Segment>
+        <Divider />
+        <ResetSenha />
       </div>
     );
   }

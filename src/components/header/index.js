@@ -36,7 +36,7 @@ class Header extends Component {
 
     return (
       <div>
-        <Menu fixed='top' inverted>
+        <Menu fixed='top' inverted style={{ backgroundColor: '#49769c' }}>
           <Container>
             <Menu.Item as='a' header>
               <Image size='mini' src='https://image.flaticon.com/icons/png/512/1698/1698535.png' style={{ marginRight: '1.5em' }} />

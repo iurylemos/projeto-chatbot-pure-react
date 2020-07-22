@@ -49,7 +49,7 @@ class Cadastro extends Component {
     return (
       <Container text style={{ padding: '70px' }}>
         <Message
-          color='teal'
+          color='orange'
           attached
           header='Página de Cadastro'
           content='Insira os dados para o seu primeiro acesso!'

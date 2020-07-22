@@ -41,20 +41,16 @@ class ResetSenha extends Component {
     const { email, error, emailHasBeenSent } = this.state
 
     return (
-      <Modal trigger={<Button color='youtube'>Resetar Senha</Button>} closeIcon>
+      <Modal trigger={<Button color='youtube' icon='key' content='Resetar Senha' />} closeIcon>
         <Modal.Header>Reset a Senha</Modal.Header>
         <Modal.Content image>
           <Image wrapped size='medium' src='https://react.semantic-ui.com/images/avatar/large/rachel.png' />
           <Modal.Description>
             {emailHasBeenSent && (
-              <div className="py-3 bg-green-400 w-full text-white text-center mb-3">
-                An email has been sent to you!
-              </div>
+              <Message floating>Um email foi enviado para você!</Message>
             )}
             {error !== null && (
-              <div className="py-3 bg-red-600 w-full text-white text-center mb-3">
-                {error}
-              </div>
+              <Message floating color='red' error>{error}</Message>
             )}
             <Form warning>
               <Form.Field>
@@ -65,9 +61,10 @@ class ResetSenha extends Component {
                   header='Reset de Senha'
                   list={[
                     'Verifique se o e-mail digitado está correto.',
+                    'Você irá receber um e-mail, e faça o reset por lá mesmo',
                   ]}
                 />
-                <Button type='button' onClick={this.sendResetEmail} color='instagram'>Enviar</Button>
+                <Button type='button' onClick={this.sendResetEmail} color='orange'>Enviar</Button>
               </Form.Field>
             </Form>
           </Modal.Description>

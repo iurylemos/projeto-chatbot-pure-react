@@ -4,9 +4,11 @@ import ChatBotService from '../../services/api/chatbot.services';
 import JanelaChatbot from '../janela-chatbot';
 import './home.scss';
 import JanelaChat from '../../components/janela-chatbot/janela-chat';
+import { UserContext } from '../../config/user-provider';
 
 class Home extends Component {
 
+  static contextType = UserContext
   chatBotService = new ChatBotService()
 
   constructor(props) {
@@ -17,6 +19,7 @@ class Home extends Component {
       itemSelected: null,
       openNodeChild: false,
       openDialog: false,
+      user: { email: '', uid: '' },
       input: '',
       output: '',
       formChild: {
@@ -29,6 +32,8 @@ class Home extends Component {
   }
 
   componentDidMount = () => {
+
+
     this.addListeners()
     window.addEventListener('beforeunload', () => {
       this.setPopoutOpen(false);
@@ -37,22 +42,24 @@ class Home extends Component {
 
   addListeners = () => {
     const { listaDocumentos, listaSubDocumentos } = this.state
+    const user = this.context
+    console.log('userHome', user)
+    const { email, uid } = user;
+    this.setState({ user: { email: email, uid: uid } })
+    console.log('emailHome', email)
+    console.log('uidHome', uid)
 
-    this.chatBotService.findDocuments(1, 1).then((res) => {
-      console.log('findDocumentos', res.data)
-
-      this.chatBotService.findChatBot(1, 1).then((res) => {
-        console.log(res.data)
-        res.data.forEach(element => {
-          if (element.code_relation > 0) {
-            listaSubDocumentos.push(element)
-            this.setState({ listaSubDocumentos: listaSubDocumentos })
-          } else {
-            listaDocumentos.push(element)
-            this.setState({ listaDocumentos: listaDocumentos })
-          }
-        });
-      })
+    this.chatBotService.findChatBot(uid, 1).then((res) => {
+      console.log(res.data)
+      res.data.forEach(element => {
+        if (element.code_relation > 0) {
+          listaSubDocumentos.push(element)
+          this.setState({ listaSubDocumentos: listaSubDocumentos })
+        } else {
+          listaDocumentos.push(element)
+          this.setState({ listaDocumentos: listaDocumentos })
+        }
+      });
     })
   }
 
@@ -76,11 +83,12 @@ class Home extends Component {
 
   atualizarPergunta = () => {
     const { input, output, itemSelected } = this.state
+    const { uid } = this.state.user
 
     if (input === '' && output === '') {
       return;
     }
-    this.chatBotService.updateData(null, itemSelected.code_current, 1, 1, input, output).then((resp) => {
+    this.chatBotService.updateData(null, itemSelected.code_current, uid, 1, input, output).then((resp) => {
       this.handleClose()
       this.addListeners()
     })
@@ -89,18 +97,19 @@ class Home extends Component {
   cadastrarPergunta = () => {
     const { input, output, itemSelected, openNodeChild } = this.state
     const { inputChild, outputChild } = this.state.formChild
+    const { uid } = this.state.user
 
     if (input === '' && output === '') {
       return;
     }
 
     if (openNodeChild) {
-      this.chatBotService.insertData(itemSelected.code_current, 1, 1, inputChild, outputChild).then((resp) => {
+      this.chatBotService.insertData(itemSelected.code_current, uid, 1, inputChild, outputChild).then((resp) => {
         this.handleClose()
         this.addListeners()
       })
     } else {
-      this.chatBotService.insertData(null, 1, 1, input, output).then((resp) => {
+      this.chatBotService.insertData(null, uid, 1, input, output).then((resp) => {
         this.handleClose()
         this.addListeners()
       })
@@ -110,9 +119,10 @@ class Home extends Component {
 
   deletarPergunta = () => {
     const { itemSelected, input, output } = this.state
+    const { uid } = this.state.user
 
     if (itemSelected.code_current !== 0) {
-      this.chatBotService.deleteData(itemSelected.code_current, 1, 1, input, output).then((resp) => {
+      this.chatBotService.deleteData(itemSelected.code_current, uid, 1, input, output).then((resp) => {
         this.handleClose()
         this.addListeners()
       })
