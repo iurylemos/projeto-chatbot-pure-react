@@ -13,16 +13,30 @@ class JanelaChat extends Component {
     this.state = {
       input: '',
       messages: [],
-      loading: false
+      loading: false,
+      message_init: ''
     }
   }
 
   componentDidMount = () => {
-
+    this.addListeners()
   }
 
   componentDidUpdate() {
     this.scrollToBottom()
+  }
+
+  addListeners = () => {
+    let now = new Date();
+    let hrs = now.getHours();
+    let msg = "";
+
+    if (hrs >= 0) msg = "Boa noite"; // REALLY early
+    if (hrs > 6) msg = "Bom dia";      // After 6am
+    if (hrs > 12) msg = "Boa tarde";    // After 12pm
+    if (hrs > 18) msg = "Boa noite";      // After 5pm
+    if (hrs > 22) msg = "Boa noite";        // After 10pm
+    this.setState({ message_init: `Olá! ${msg}. Em que posso ajudar?` })
   }
 
   scrollToBottom = () => {
@@ -73,7 +87,7 @@ class JanelaChat extends Component {
 
   render = () => {
 
-    const { input, messages, loading } = this.state
+    const { input, messages, loading, message_init } = this.state
 
     return (
       <div>
@@ -84,7 +98,7 @@ class JanelaChat extends Component {
           <div style={{ height: '370px', overflowY: 'scroll' }} ref="messageList">
             <div onClick={() => this.sendMessage()} className="talk-bubble tri-right left-top" style={{ width: "90%", backgroundColor: "#00aabb" }}>
               <div className="talktext">
-                <p>Olá! Em que posso ajudar?</p>
+                <p>{message_init}</p>
               </div>
             </div>
 

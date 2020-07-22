@@ -5,8 +5,8 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import { UserContext } from './config/user-provider';
 import Home from './view/home';
 import Header from './components/header'
-
-
+import Cadastro from './view/cadastro';
+import ResetSenha from './view/reset-senha';
 
 // const user = null
 
@@ -20,7 +20,10 @@ function App() {
         {console.log(user)}
         {
           !user ?
-            <Route path="/" exact={true} component={Login} />
+            <>
+              <Route path="/" exact={true} component={Login} />
+              <Route path="/cadastro" exact={true} component={Cadastro} />
+            </>
             :
             <>
               <Header />

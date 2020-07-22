@@ -130,9 +130,9 @@ class Home extends Component {
     });
   };
 
-  handleClose = () => this.setState({ openDialog: false, input: '', output: '', itemSelected: null, openNodeChild: false, listaDocumentos: [], listaSubDocumentos: [], form: { inputChild: '', outputChild: '' } })
+  handleClose = () => this.setState({ openDialog: false, input: '', output: '', itemSelected: null, openNodeChild: false, listaDocumentos: [], listaSubDocumentos: [], formChild: { inputChild: '', outputChild: '' } })
   handleOpen = (resposta) => this.setState({ itemSelected: resposta, openDialog: true, input: resposta.input, output: resposta.output })
-  handleCancel = () => this.setState({ openDialog: false, input: '', output: '', itemSelected: null, openNodeChild: false, form: { inputChild: '', outputChild: '' } })
+  handleCancel = () => this.setState({ openDialog: false, input: '', output: '', itemSelected: null, openNodeChild: false, formChild: { inputChild: '', outputChild: '' } })
 
 
   portalNode = () => {
@@ -230,6 +230,7 @@ class Home extends Component {
                 <List.Description>{resp.output}</List.Description>
               </List.Content>
             </List.Item>
+            {this.listChild(resp.code_current)}
           </List.List>
         ))
       )
@@ -251,7 +252,7 @@ class Home extends Component {
           <Container text style={{ marginTop: '7em' }}>
             <Header as='h1'>
               Projeto criado para usar o ChatBot
-              <Button animated='fade' floated='right' onClick={() => this.setState({ openDialog: true })}>
+              <Button color='instagram' animated='fade' floated='right' onClick={() => this.setState({ openDialog: true })}>
                 <Button.Content visible>Cadastrar nova Pergunta</Button.Content>
                 <Button.Content hidden>Criar Pergunta</Button.Content>
               </Button>
