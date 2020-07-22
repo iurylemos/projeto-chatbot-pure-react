@@ -1,15 +1,25 @@
 import React, { Component } from 'react';
 import { auth } from '../../services/firebase/firebase';
 import { Menu, Container, Dropdown, Image, Input } from 'semantic-ui-react';
+import { UserContext } from '../../config/user-provider';
 
 class Header extends Component {
+  static contextType = UserContext
 
   constructor(props) {
     super(props);
 
     this.state = {
-
+      email: ''
     }
+  }
+
+  componentDidMount() {
+    const user = this.context
+
+    const { email } = user;
+
+    this.setState({ email: email })
   }
 
   signOutUser = () => {
@@ -21,6 +31,9 @@ class Header extends Component {
   }
 
   render = () => {
+
+    const { email } = this.state
+
     return (
       <div>
         <Menu fixed='top' inverted>
@@ -50,7 +63,7 @@ class Header extends Component {
             </Dropdown>
             <Menu.Menu position='right'>
               <Menu.Item>
-                <Input icon='search' placeholder='Search...' />
+                <Input icon='search' value={email} placeholder='Search...' />
               </Menu.Item>
               <Menu.Item
                 name='logout'

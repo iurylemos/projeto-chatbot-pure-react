@@ -21,7 +21,7 @@ class Cadastro extends Component {
     event.preventDefault();
     try {
       const { user } = await auth.createUserWithEmailAndPassword(email, password);
-      generateUserDocument(user, { displayName });
+      await generateUserDocument(user, { displayName });
     }
     catch (error) {
       this.setState({ error: "Error Signing up with email and password" })

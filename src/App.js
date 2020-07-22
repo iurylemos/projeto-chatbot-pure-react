@@ -6,7 +6,6 @@ import { UserContext } from './config/user-provider';
 import Home from './view/home';
 import Header from './components/header'
 import Cadastro from './view/cadastro';
-import ResetSenha from './view/reset-senha';
 
 // const user = null
 
