@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import { Header, Segment, Input } from 'semantic-ui-react';
 import './janela-chat.scss';
 import ChatBotService from '../../services/api/chatbot.services';
+import { UserContext } from '../../config/user-provider';
 
 class JanelaChat extends Component {
 
+  static contextType = UserContext
   chatBotService = new ChatBotService()
 
   constructor(props) {
@@ -14,7 +16,11 @@ class JanelaChat extends Component {
       input: '',
       messages: [],
       loading: false,
-      message_init: ''
+      message_init: '',
+      user: {
+        email: '',
+        uid: '',
+      }
     }
   }
 
@@ -27,6 +33,10 @@ class JanelaChat extends Component {
   }
 
   addListeners = () => {
+
+    const user = this.context
+    const { email, uid } = user;
+    this.setState({ user: { email: email, uid: uid } })
     let now = new Date();
     let hrs = now.getHours();
     let msg = "";
@@ -49,9 +59,10 @@ class JanelaChat extends Component {
     console.log('this.sendMessage')
     this.setState({ loading: true })
 
+    const { uid } = this.state.user
     const { input, messages } = this.state
 
-    this.chatBotService.conversarToChatBot(1, input).then((resp) => {
+    this.chatBotService.conversarToChatBot(uid, input).then((resp) => {
 
       if (messages.length) {
         if ({ ...resp.data[0] }.code_relation === messages[messages.length - 1].code_current) {

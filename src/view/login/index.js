@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './login.scss';
 import { Segment, Grid, Form, Divider, Button, Message } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
 import { auth } from '../../services/firebase/firebase';
 import ResetSenha from '../../components/reset-senha';
 
@@ -73,10 +72,7 @@ class Login extends Component {
             </Grid.Column>
 
             <Grid.Column verticalAlign='middle'>
-              <Link to='/cadastro'>
-                <Button content='Cadastrar' icon='signup' size='big' color='orange' />
-              </Link>
-
+              <ResetSenha />
             </Grid.Column>
           </Grid>
 
@@ -87,8 +83,7 @@ class Login extends Component {
             <p>{error}</p>
           </Message>}
         </Segment>
-        <Divider />
-        <ResetSenha />
+
       </div>
     );
   }

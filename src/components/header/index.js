@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { auth } from '../../services/firebase/firebase';
-import { Menu, Container, Dropdown, Image, Input } from 'semantic-ui-react';
+import { Menu, Container, Dropdown, Image, Input, Icon } from 'semantic-ui-react';
 import { UserContext } from '../../config/user-provider';
 import { Link } from 'react-router-dom';
 
@@ -37,19 +37,18 @@ class Header extends Component {
 
     return (
       <div>
-        <Menu fixed='top' inverted style={{ backgroundColor: '#49769c' }}>
+        <Menu fixed='top' inverted style={{ backgroundColor: '#49769c' }} stackable>
           <Container>
-            <Menu.Item as='a' header>
+            <Menu.Item header>
               <Image size='mini' src='https://image.flaticon.com/icons/png/512/1698/1698535.png' style={{ marginRight: '1.5em' }} />
                 Projeto ChatBot
               </Menu.Item>
-            <Menu.Item as='a'>Home</Menu.Item>
-            <Menu.Item><Link to='/diagrama'>Diagram</Link></Menu.Item>
+            <Menu.Item name='home' as={Link} to='/'><Icon name='home' />Home</Menu.Item>
 
-            <Dropdown item simple text='Dropdown'>
+            <Dropdown item simple text='Configurações'>
               <Dropdown.Menu>
-                <Dropdown.Item>List Item</Dropdown.Item>
-                <Dropdown.Item>List Item</Dropdown.Item>
+                <Dropdown.Item as={Link} to='/cadastro' ><Icon name='signup' />Cadastrar Cliente</Dropdown.Item>
+                <Dropdown.Item as={Link} to='/diagrama'><Icon name='list ol' />Diagrama</Dropdown.Item>
                 <Dropdown.Divider />
                 <Dropdown.Header>Header Item</Dropdown.Header>
                 <Dropdown.Item>
