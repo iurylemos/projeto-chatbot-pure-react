@@ -3,7 +3,7 @@ import './login.scss';
 import { Segment, Grid, Form, Divider, Button, Message } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import { auth } from '../../services/firebase/firebase';
-import ResetSenha from '../reset-senha';
+import ResetSenha from '../../components/reset-senha';
 
 
 class Login extends Component {

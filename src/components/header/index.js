@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { auth } from '../../services/firebase/firebase';
 import { Menu, Container, Dropdown, Image, Input } from 'semantic-ui-react';
 import { UserContext } from '../../config/user-provider';
+import { Link } from 'react-router-dom';
 
 class Header extends Component {
   static contextType = UserContext
@@ -43,6 +44,7 @@ class Header extends Component {
                 Projeto ChatBot
               </Menu.Item>
             <Menu.Item as='a'>Home</Menu.Item>
+            <Menu.Item><Link to='/diagrama'>Diagram</Link></Menu.Item>
 
             <Dropdown item simple text='Dropdown'>
               <Dropdown.Menu>

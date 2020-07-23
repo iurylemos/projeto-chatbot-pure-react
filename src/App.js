@@ -6,6 +6,7 @@ import { UserContext } from './config/user-provider';
 import Home from './view/home';
 import Header from './components/header'
 import Cadastro from './view/cadastro';
+import Diagram from './view/diagram';
 
 // const user = null
 
@@ -26,7 +27,8 @@ function App() {
             :
             <>
               <Header />
-              <Route path="/" component={Home} />
+              <Route path="/" exact={true} component={Home} />
+              <Route path="/diagrama" exact={true} component={Diagram} />
             </>
         }
       </Switch>
